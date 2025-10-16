@@ -1,0 +1,12 @@
+{
+  "description": "A payment gateway example app",
+  "workspaces": [
+    "frontend"
+  ],
+  "devDependencies": {
+    "@swell/app-types": "^1.0.5"
+  },
+  "name": "payment_example",
+  "scripts": {},
+  "version": "1.0.0"
+}

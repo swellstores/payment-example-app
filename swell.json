@@ -1,0 +1,14 @@
+{
+  "description": "A payment gateway example app",
+  "id": "payment_example",
+  "name": "Payment Example",
+  "type": "integration",
+  "version": "1.0.0",
+  "permissions": [],
+  "extensions": [
+    {
+      "type": "payment",
+      "method": "card"
+    }
+  ]
+}
