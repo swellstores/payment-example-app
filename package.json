@@ -4,7 +4,7 @@
     "frontend"
   ],
   "devDependencies": {
-    "@swell/app-types": "^1.0.5"
+    "@swell/app-types": "^1.1.1"
   },
   "name": "payment_example",
   "scripts": {},
