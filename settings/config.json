@@ -1,0 +1,16 @@
+{
+  "label": "Configuration",
+  "description": "Example payment configuration settings",
+  "fields": [
+    {
+      "id": "private_key",
+      "label": "Private API key",
+      "type": "text"
+    },
+    {
+      "id": "public_key",
+      "label": "Public API key",
+      "type": "text"
+    }
+  ]
+}
