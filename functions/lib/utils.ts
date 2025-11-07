@@ -1,3 +1,15 @@
+export function validateCard(req: SwellRequest) {
+  const {
+    data: { card },
+  } = req;
+
+  if (!card) {
+    throw new Error("Card is required");
+  }
+
+  return true;
+}
+
 export function validateCardNumber(req: SwellRequest) {
   const {
     data: { card },

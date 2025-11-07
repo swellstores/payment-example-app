@@ -1,0 +1,16 @@
+{
+  "label": "Alternate payment settings",
+  "description": "Example payment configuration settings",
+  "fields": [
+    {
+      "id": "private_key",
+      "label": "Alternate Private API key",
+      "type": "text"
+    },
+    {
+      "id": "public_key",
+      "label": "Alternate Public API key",
+      "type": "text"
+    }
+  ]
+}
