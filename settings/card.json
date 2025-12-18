@@ -1,15 +1,16 @@
 {
   "label": "Card payment settings",
-  "description": "Example payment configuration settings",
+  "description": "Razorpay payment configuration settings",
   "fields": [
     {
-      "id": "private_key",
-      "label": "Private API key",
-      "type": "text"
+      "id": "key_id",
+      "label": "Key Id",
+      "type": "text",
+      "public": true
     },
     {
-      "id": "public_key",
-      "label": "Public API key",
+      "id": "key_secret",
+      "label": "Secret key",
       "type": "text"
     }
   ]

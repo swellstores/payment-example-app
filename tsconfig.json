@@ -1,20 +1,11 @@
 {
   "compilerOptions": {
-    "lib": [
-      "esnext",
-      "webworker"
-    ],
-    "module": "esnext",
+    "strict": true,
+    "lib": ["esnext", "webworker"],
+    "module": "nodenext",
     "target": "esnext",
-    "types": [
-      "@swell/app-types"
-    ]
+    "types": ["@swell/app-types"]
   },
-  "exclude": [
-    "node_modules",
-    "frontend"
-  ],
-  "include": [
-    "**/*.ts"
-  ]
+  "exclude": ["node_modules", "frontend"],
+  "include": ["**/*.ts", "**/*.tsx"]
 }
