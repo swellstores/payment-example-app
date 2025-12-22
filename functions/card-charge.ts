@@ -26,10 +26,15 @@ async function createPayment(req: SwellRequest, razorpay: Razorpay) {
     amount: razorpayAmount,
     currency,
     payment_capture: captured !== false,
+    notification: {
+      token_id: card.token,
+    },
   });
 
   const { razorpay_payment_id: paymentId } =
     await razorpay.createRecurringPayment({
+      email: account.email,
+      contact: account.phone,
       amount: razorpayAmount,
       currency,
       order_id: order.id,

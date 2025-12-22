@@ -1,3 +1,10 @@
+/*
+  DOCS:
+    - Create the Authorization Transaction: https://razorpay.com/docs/api/payments/recurring-payments/cards/create-authorization-transaction/
+    - Fetch and Manage Tokens: https://razorpay.com/docs/api/payments/recurring-payments/cards/tokens/
+    - Create Subsequent Payments: https://razorpay.com/docs/api/payments/recurring-payments/cards/create-subsequent-payments/
+*/
+
 import { useCallback, useEffect } from "preact/hooks";
 import { memo } from "preact/compat";
 import { getIntentData, getRazorpayOptions } from "./lib/razorpay";
