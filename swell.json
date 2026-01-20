@@ -1,7 +1,7 @@
 {
-  "description": "A payment gateway example app",
-  "id": "payment_example",
-  "name": "Payment Example",
+  "description": "Razorpay payment gateway",
+  "id": "razorpay",
+  "name": "Razorpay",
   "type": "integration",
   "version": "1.0.0",
   "permissions": [],
@@ -9,12 +9,7 @@
     {
       "id": "card",
       "type": "payment",
-      "description": "An example credit card payment gateway"
-    },
-    {
-      "id": "alternate",
-      "type": "payment",
-      "description": "An example alternate payment gateway"
+      "description": "Razorpay credit card payment gateway"
     }
   ]
 }
