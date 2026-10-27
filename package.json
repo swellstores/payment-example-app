@@ -7,7 +7,7 @@
   "scripts": {},
   "version": "1.0.0",
   "dependencies": {
-    "preact": "10.28.0"
+    "preact": "10.29.8"
   },
   "devDependencies": {
     "@swell/app-types": "^1.1.1",
