@@ -6,6 +6,6 @@
     "target": "esnext",
     "types": ["@swell/app-types"]
   },
-  "exclude": ["node_modules", "frontend"],
+  "exclude": ["node_modules", "frontend", "components"],
   "include": ["**/*.ts", "**/*.tsx"]
 }
