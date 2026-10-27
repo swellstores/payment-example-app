@@ -10,7 +10,7 @@ An example Swell app that implements a complete credit card payment gateway usin
   - `payment.get_intent` — verify and retrieve payment details after checkout
   - `payment.charge` — authorize/capture the payment when an order is submitted
   - `payment.refund` — refund a captured payment
-- A **client-side checkout component** (`components/Razorpay.tsx`, Preact) that opens Razorpay Checkout, tokenizes the card, and writes the token back to the cart
+- A **checkout component** (`components/Razorpay.tsx`, Preact and `@swell/apps-sdk`) that Swell's checkout renders for the payment method. It opens Razorpay Checkout, tokenizes the card, and returns the token for the cart's billing
 - **App settings** for gateway credentials, with the public key exposed to the storefront and the secret key kept server-side
 - A minimal gateway REST client built on `fetch` and Web Crypto (HMAC signature verification) — compatible with the Cloudflare Workers runtime, no Node SDK required
 
@@ -20,11 +20,11 @@ An example Swell app that implements a complete credit card payment gateway usin
 Checkout (storefront)                     Swell platform                  Razorpay
 ─────────────────────                     ──────────────                  ────────
 components/Razorpay.tsx
-  └─ onSubmit(cart)
-       └─ createIntent() ───────────────▶ payment.create_intent ────────▶ create customer + order
+  └─ on('submit')
+       └─ call('createIntent') ─────────▶ payment.create_intent ────────▶ create customer + order
        └─ open Razorpay Checkout ◀──────────────────────────────────────  card entry + tokenization
-       └─ getIntent() ──────────────────▶ payment.get_intent ───────────▶ verify signature, fetch token
-       └─ updateCart(billing.card token)
+       └─ call('getIntent') ────────────▶ payment.get_intent ───────────▶ verify signature, fetch token
+       └─ return { billing } (card token)
 Order submitted ────────────────────────▶ payment.charge ───────────────▶ create/capture payment
 Refund issued ──────────────────────────▶ payment.refund ───────────────▶ refund payment
 ```
@@ -42,13 +42,13 @@ functions/
   lib/razorpay.ts              Razorpay REST client (fetch + Web Crypto HMAC)
   lib/swell.ts                 App settings helper
 components/
-  Razorpay.tsx                 Client-side checkout component (Preact)
+  Razorpay.tsx                 Checkout component (Preact, @swell/apps-sdk)
   lib/razorpay.ts              Checkout helpers (intent data, currency subunits)
 ```
 
 ## Setup
 
-Requires the [Swell CLI](https://developers.swell.is/apps/cli) and a Swell account.
+Requires [Swell CLI](https://developers.swell.is/apps/cli) 2.9.28 or later and a Swell account.
 
 ```bash
 npm install -g @swell/cli

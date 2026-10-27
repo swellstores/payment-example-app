@@ -5,40 +5,63 @@
     - Create Subsequent Payments: https://razorpay.com/docs/api/payments/recurring-payments/cards/create-subsequent-payments/
 */
 
-import { useCallback, useEffect } from "preact/hooks";
-import { memo } from "preact/compat";
+import { useEffect, useRef } from "preact/hooks";
+import type {
+  ComponentProps,
+  PaymentContext,
+  PaymentSubmitResult,
+} from "@swell/apps-sdk/components";
 import { getIntentData, getRazorpayOptions } from "./lib/razorpay";
 
 declare const window: Window & { Razorpay: any };
 
-const RAZORPAY_SCRIPT_ID = "razorpay";
 const RAZORPAY_SDK_URL = "https://checkout.razorpay.com/v1/checkout.js";
 
-export const config: SwellConfig = {
-  extension: "card",
+export const config = {
   description: "Razorpay client side integration",
+  extension: { id: "card" },
+  targets: [{ id: "checkout.payment.methods" }],
 };
 
-function Razorpay({
+function loadRazorpay(): Promise<void> {
+  if (window.Razorpay) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = RAZORPAY_SDK_URL;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("Razorpay could not be loaded"));
+    document.head.appendChild(script);
+  });
+}
+
+export default function Razorpay({
+  context,
   settings,
-  loadLib,
-  registerHandlers,
-  getIntent,
-  createIntent,
-  updateCart,
-  onReady,
-}: SwellData) {
-  const onSubmit = useCallback(
-    async (cart: Record<string, any>) => {
-      const intentData = getIntentData(cart);
-      const { order, customer } = await createIntent(intentData);
+  on,
+  call,
+}: ComponentProps<never, PaymentContext>) {
+  // The submit handler is registered once, so it reads the latest cart from a ref
+  const latest = useRef(context);
+  latest.current = context;
+  const cardSettings = settings.card as SwellSettings;
+
+  useEffect(() => {
+    void loadRazorpay().catch(() => {});
+
+    return on("submit", async (): Promise<PaymentSubmitResult> => {
+      await loadRazorpay();
+      const intentData = getIntentData(latest.current.cart);
+      const { order, customer } = await call<Record<string, any>>(
+        "createIntent",
+        intentData
+      );
 
       const paymentDetails = await new Promise<Record<string, any>>(
         (resolve, reject) => {
           const razorpayOptions = getRazorpayOptions(
             order,
             customer,
-            settings,
+            cardSettings,
             resolve,
             reject
           );
@@ -48,7 +71,7 @@ function Razorpay({
         }
       );
 
-      const payment = await getIntent(paymentDetails);
+      const payment = await call<Record<string, any>>("getIntent", paymentDetails);
       const { token } = payment;
 
       if (!token?.card) {
@@ -57,7 +80,7 @@ function Razorpay({
 
       const { card } = token;
 
-      return updateCart({
+      return {
         billing: {
           card: {
             token: token.id,
@@ -72,19 +95,13 @@ function Razorpay({
             },
           },
         },
-      });
-    },
-    [settings, getIntent, createIntent, updateCart]
-  );
-
-  useEffect(() => {
-    registerHandlers({
-      onSubmit,
+      };
     });
-    loadLib(RAZORPAY_SCRIPT_ID, RAZORPAY_SDK_URL).then(onReady);
-  }, [registerHandlers, loadLib, onReady, onSubmit]);
+  }, [on, call, cardSettings]);
 
-  return null;
+  return (
+    <p style={{ margin: 0 }}>
+      You will enter your card details in a secure Razorpay window.
+    </p>
+  );
 }
-
-export default memo(Razorpay);
